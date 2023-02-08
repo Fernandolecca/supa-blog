@@ -17,6 +17,7 @@ function SignUplayout({ children }: Props) {
         <p className="text-gray-700 text-sm mb-14 text-center">
           Please fill the fields to register into <b>supablog.</b>
         </p>
+
         {children}
       </div>
     </section>
