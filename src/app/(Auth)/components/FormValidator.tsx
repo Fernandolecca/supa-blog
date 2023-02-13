@@ -1,5 +1,5 @@
 "use client";
-import { useForm, SubmitHandler } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 
 import { ObjectSchema } from "yup";
@@ -11,11 +11,13 @@ interface Props {
     [field: string]: any;
   };
   schema: ObjectSchema<Inputs>;
-  renderForm: (data: FormProps) => React.ReactElement;
+  renderForm: (
+    data: Pick<FormProps, "formActions" | "fields">
+  ) => React.ReactElement;
 }
 
 function FormValidator({ defaultValues, renderForm, schema }: Props) {
-  const { register, handleSubmit, formState } = useForm<Inputs>({
+  const formActions = useForm<Inputs>({
     defaultValues,
     resolver: yupResolver(schema),
     mode: "onTouched",
@@ -24,11 +26,7 @@ function FormValidator({ defaultValues, renderForm, schema }: Props) {
 
   const fields = Object.keys(defaultValues);
 
-  const onSubmit: SubmitHandler<Inputs> = (data) => {
-    console.table(data);
-  };
-
-  return renderForm({ register, handleSubmit, formState, fields, onSubmit });
+  return renderForm({ formActions, fields });
 }
 
 export default FormValidator;

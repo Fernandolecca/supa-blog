@@ -1,30 +1,27 @@
 "use client";
-import React from "react";
-import {
-  FormState,
-  SubmitHandler,
-  UseFormHandleSubmit,
-  UseFormRegister,
-} from "react-hook-form";
+import React, { useEffect } from "react";
+import { SubmitHandler, UseFormReturn } from "react-hook-form";
 
 export interface Props {
-  register: UseFormRegister<any>;
-  handleSubmit: UseFormHandleSubmit<any>;
+  formActions: UseFormReturn;
   onSubmit: SubmitHandler<any>;
-  formState: FormState<any>;
   fields: string[];
+  isLoading: boolean;
   children?: React.ReactNode;
 }
 
 function Form({
-  register,
-  handleSubmit,
+  formActions: { register, handleSubmit, formState, reset },
   onSubmit,
-  formState,
   fields,
+  isLoading,
   children,
 }: Props) {
-  const { errors, isValid } = formState;
+  const { errors, isValid, isSubmitSuccessful } = formState;
+
+  useEffect(() => {
+    reset();
+  }, [isSubmitSuccessful, reset]);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -44,7 +41,7 @@ function Form({
             {...register(field)}
           />
           <label
-            htmlFor="name"
+            htmlFor={field}
             className="
                 block text-sm text-gray-700 absolute -top-3  left-1 align-baseline capitalize
                 peer-placeholder-shown:top-1/2 
@@ -71,7 +68,7 @@ function Form({
         className="bg-primary hover:bg-primary-hover text-white px-4 py-2 font-sans w-full rounded-sm mt-8 focus:outline-none disabled:bg-gray-300"
         disabled={!isValid}
       >
-        {children}
+        {isLoading ? "Loading..." : children}
       </button>
     </form>
   );
