@@ -3,11 +3,13 @@
 import React, { useState } from "react";
 import supabase from "supabase";
 import Link from "next/link";
+import Toast from "@/shared/Toast";
 import Form from "@/app/(Auth)/components/Form";
 import FormValidator from "@/app/(Auth)/components/FormValidator";
 import { signInSchema as schema, signInInputs } from "@/schema/form";
 import { SubmitHandler } from "react-hook-form";
 import { useRouter } from "next/navigation";
+import { BiErrorCircle, BiCheck } from "react-icons/bi";
 
 function SignIn() {
   const [errorMsg, setErrorMsg] = useState("");
@@ -57,15 +59,23 @@ function SignIn() {
       </p>
 
       {errorMsg && (
-        <span className="text-error text-md font-sans fixed top-4 right-4 bg-white rounded-sm border-gray-400 z-10 py-2 px-4 select-none shadow-md shadow-gray-700">
-          {errorMsg}
-        </span>
+        <Toast
+          message={errorMsg}
+          status="error"
+          icon={
+            <BiErrorCircle className="inline-block align-bottom mr-1 fill-error w-5 h-5" />
+          }
+        />
       )}
 
       {successMsg && (
-        <span className="text-success text-md font-sans fixed top-4 right-4 bg-white rounded-sm border-gray-400 z-10 py-2 px-4 select-none shadow-md shadow-gray-700">
-          {successMsg}
-        </span>
+        <Toast
+          message={successMsg}
+          status="success"
+          icon={
+            <BiCheck className="inline-block align-text-bottom mr-1 fill-success w-5 h-5" />
+          }
+        />
       )}
     </>
   );

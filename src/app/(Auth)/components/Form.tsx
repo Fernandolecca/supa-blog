@@ -1,5 +1,6 @@
 "use client";
 import React, { useEffect } from "react";
+import Loader from "@/shared/Loader";
 import { SubmitHandler, UseFormReturn } from "react-hook-form";
 
 export interface Props {
@@ -68,7 +69,7 @@ function Form({
         className="bg-primary hover:bg-primary-hover text-white px-4 py-2 font-sans w-full rounded-sm mt-8 focus:outline-none disabled:bg-gray-300"
         disabled={!isValid}
       >
-        {isLoading ? "Loading..." : children}
+        {isLoading ? <Loader /> : children}
       </button>
     </form>
   );

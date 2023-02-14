@@ -23,6 +23,17 @@ module.exports = {
       fontFamily: {
         sans: ["var(--font-lato)", ...defaultTheme.fontFamily.sans],
       },
+
+      keyframes: {
+        fadeIn: {
+          from: { opacity: 0 },
+          to: { opacity: 1 },
+        },
+      },
+
+      animation: {
+        "fade-in": "fadeIn 500ms ease-in-out forwards",
+      },
     },
   },
   plugins: [require("@tailwindcss/forms")],
