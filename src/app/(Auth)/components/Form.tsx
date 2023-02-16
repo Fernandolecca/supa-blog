@@ -1,6 +1,7 @@
 "use client";
 import React, { useEffect } from "react";
 import Loader from "@/shared/Loader";
+import Button from "@/shared/Button";
 import { SubmitHandler, UseFormReturn } from "react-hook-form";
 
 export interface Props {
@@ -64,13 +65,16 @@ function Form({
         </div>
       ))}
 
-      <button
+      <Button
         type="submit"
-        className="bg-primary hover:bg-primary-hover text-white px-4 py-2 font-sans w-full rounded-sm mt-8 focus:outline-none disabled:bg-gray-300"
         disabled={!isValid}
+        color="primary"
+        withLoader={isLoading}
+        fullWidth={true}
+        marginTop={8}
       >
-        {isLoading ? <Loader /> : children}
-      </button>
+        {children}
+      </Button>
     </form>
   );
 }
