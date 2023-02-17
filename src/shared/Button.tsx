@@ -1,9 +1,10 @@
-import React, { ButtonHTMLAttributes } from "react";
+import React, { ButtonHTMLAttributes, MouseEventHandler } from "react";
 import Loader from "./Loader";
 
 interface Props extends ButtonHTMLAttributes<HTMLButtonElement> {
   color: "primary" | "success" | "warning" | "error";
   children: React.ReactNode;
+  onClick?: MouseEventHandler<HTMLButtonElement>;
   icon?: React.ReactNode;
   withLoader?: boolean;
   fullWidth?: boolean;
@@ -33,6 +34,7 @@ function Button({
   withLoader,
   fullWidth,
   marginTop,
+  onClick,
 }: Props) {
   return (
     <button
@@ -43,6 +45,7 @@ function Button({
       } rounded-sm mt-${marginTop} focus:outline-none disabled:bg-gray-300`}
       type={type}
       disabled={disabled}
+      onClick={onClick}
     >
       {icon && (
         <span className="inline-block mr-2 align-text-bottom">{icon}</span>
