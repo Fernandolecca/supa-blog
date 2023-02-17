@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import supabase from "supabase";
 import Link from "next/link";
 import Toast from "@/shared/Toast";
-import FormValidator from "@/app/(Auth)/components/FormValidator";
+import FormValidator from "@/shared/FormValidator";
 import Form from "@/app/(Auth)/components/Form";
 import { signUpSchema as schema, signUpInputs } from "@/schema/form";
 import { SubmitHandler } from "react-hook-form";
@@ -50,7 +50,16 @@ function SignUp() {
         defaultValues={{ name: "", email: "", password: "" }}
         schema={schema}
         renderForm={(data) => (
-          <Form {...data} onSubmit={onSubmit} isLoading={isLoading}>
+          <Form
+            {...data}
+            onSubmit={onSubmit}
+            isLoading={isLoading}
+            fields={[
+              { name: "name", type: "text" },
+              { name: "email", type: "text" },
+              { name: "password", type: "password" },
+            ]}
+          >
             Sign up
           </Form>
         )}

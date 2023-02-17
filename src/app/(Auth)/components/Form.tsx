@@ -1,16 +1,7 @@
 "use client";
 import React, { useEffect } from "react";
-import Loader from "@/shared/Loader";
 import Button from "@/shared/Button";
-import { SubmitHandler, UseFormReturn } from "react-hook-form";
-
-export interface Props {
-  formActions: UseFormReturn;
-  onSubmit: SubmitHandler<any>;
-  fields: string[];
-  isLoading: boolean;
-  children?: React.ReactNode;
-}
+import { FormProps } from "@/types/form";
 
 function Form({
   formActions: { register, handleSubmit, formState, reset },
@@ -18,7 +9,7 @@ function Form({
   fields,
   isLoading,
   children,
-}: Props) {
+}: FormProps) {
   const { errors, isValid, isSubmitSuccessful } = formState;
 
   useEffect(() => {
@@ -30,20 +21,20 @@ function Form({
       {fields.map((field, index) => (
         <div
           key={index}
-          className={`relative py-3 ${errors[field] ? "mb-6" : "mb-3"}`}
+          className={`relative py-3 ${errors[field.name] ? "mb-6" : "mb-3"}`}
         >
           <input
-            type={field === "password" ? "password" : "text"}
-            id={field}
-            placeholder={field}
+            type={field.type}
+            id={field.name}
+            placeholder={field.name}
             autoComplete="off"
             className={`w-full border-gray-400 rounded-md  focus:border-none focus:ring-primary focus:ring-2 peer placeholder-transparent ${
-              errors[field] && "focus:ring-error border-error"
+              errors[field.name] && "focus:ring-error border-error"
             }`}
-            {...register(field)}
+            {...register(field.name)}
           />
           <label
-            htmlFor={field}
+            htmlFor={field.name}
             className="
                 block text-sm text-gray-700 absolute -top-3  left-1 align-baseline capitalize
                 peer-placeholder-shown:top-1/2 
@@ -54,12 +45,12 @@ function Form({
                 transition-all 
             "
           >
-            {field}
+            {field.name}
           </label>
 
-          {errors[field] && (
+          {errors[field.name] && (
             <span className="text-sm absolute -bottom-2 left-0 text-error">
-              {errors[field]?.message as string}
+              {errors[field.name]?.message as string}
             </span>
           )}
         </div>

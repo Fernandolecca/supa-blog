@@ -5,7 +5,7 @@ import supabase from "supabase";
 import Link from "next/link";
 import Toast from "@/shared/Toast";
 import Form from "@/app/(Auth)/components/Form";
-import FormValidator from "@/app/(Auth)/components/FormValidator";
+import FormValidator from "@/shared/FormValidator";
 import { signInSchema as schema, signInInputs } from "@/schema/form";
 import { SubmitHandler } from "react-hook-form";
 import { useRouter } from "next/navigation";
@@ -45,7 +45,15 @@ function SignIn() {
         }}
         schema={schema}
         renderForm={(data) => (
-          <Form {...data} onSubmit={onSubmit} isLoading={isLoading}>
+          <Form
+            {...data}
+            onSubmit={onSubmit}
+            isLoading={isLoading}
+            fields={[
+              { name: "email", type: "text" },
+              { name: "password", type: "password" },
+            ]}
+          >
             Sign In
           </Form>
         )}
