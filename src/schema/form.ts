@@ -22,6 +22,13 @@ export const signUpSchema = yup
   })
   .concat(signInSchema);
 
+export const newPostShema = yup.object({
+  isPublish: yup.boolean(),
+  title: yup.string().required("A post needs a title"),
+  content: yup.string().required("Cannot save a post with empty content"),
+});
+
 export type Inputs = Record<string, any>;
 export type signInInputs = yup.InferType<typeof signInSchema>;
 export type signUpInputs = yup.InferType<typeof signUpSchema>;
+export type newPostInputs = yup.InferType<typeof newPostShema>;

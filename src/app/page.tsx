@@ -6,13 +6,13 @@ import { BsPencilSquare } from "react-icons/bs";
 import { useEffect, useState } from "react";
 
 export default function Home() {
-  const route = useRouter();
+  const router = useRouter();
   const [posts, setPosts] = useState<any[]>([]);
 
   const onSignOut = async () => {
     const { error } = await supabase.auth.signOut();
 
-    route.push("/sign-in");
+    router.push("/sign-in");
   };
 
   const fetchPosts = async () => {
@@ -34,7 +34,7 @@ export default function Home() {
           type="button"
           color="success"
           icon={<BsPencilSquare />}
-          onClick={fetchPosts}
+          onClick={() => router.push("/post/new")}
         >
           New post
         </Button>
