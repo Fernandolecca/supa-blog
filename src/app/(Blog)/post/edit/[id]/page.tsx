@@ -1,7 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import supabase from "supabase";
-import Form from "../components/Form";
+import Form from "../../components/Form";
 import FormValidator from "@/shared/FormValidator";
 import Toast from "@/shared/Toast";
 import { newPostShema as schema } from "@/schema/form";
@@ -10,55 +10,54 @@ import { newPostInputs } from "@/schema/form";
 import { BiErrorCircle, BiCheck } from "react-icons/bi";
 import { useRouter } from "next/navigation";
 
-function NewPost() {
+function EditPost({ params }: any) {
   const [isLoading, setIsLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
   const [successMsg, setSuccessMsg] = useState("");
   const router = useRouter();
 
+  const fetchPost = async () => {
+    const { data } = await supabase
+      .from("posts")
+      .select("title, content, isPublish")
+      .eq("post_id", params.id);
+
+    return data![0];
+  };
+
   const onSubmit: SubmitHandler<newPostInputs> = async ({
+    title,
     content,
     isPublish,
-    title,
   }) => {
     setIsLoading(true);
 
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
-
-    const { data, error } = await supabase
+    const { data } = await supabase
       .from("posts")
-      .insert([
-        {
-          content,
-          title,
-          isPublish,
-          user_id: user?.id,
-        },
-      ])
-      .select("post_id");
+      .update({
+        title,
+        content,
+        isPublish,
+      })
+      .eq("post_id", params.id)
+      .select();
 
     setIsLoading(false);
 
-    if (error) {
-      setErrorMsg("Sorry. We cannot save your post");
+    if (data!.length > 0) {
+      setSuccessMsg("Post data changed successfully");
     } else {
-      setSuccessMsg("Post saved succesfully");
+      setErrorMsg("An error ocurred. Please try again");
     }
 
-    router.push(`/post/${data![0].post_id}`);
+    router.push(`/post/${params.id}`);
   };
 
   return (
     <div className="w-1/2  mx-auto flex justify-center items-center h-screen px-10">
       <div className="w-full">
         <FormValidator
-          defaultValues={{
-            isPublish: false,
-            title: "",
-            content: "",
-          }}
+          defaultValues={fetchPost}
           schema={schema}
           renderForm={(data) => (
             <Form
@@ -71,7 +70,7 @@ function NewPost() {
               isLoading={isLoading}
               onSubmit={onSubmit}
             >
-              Save
+              Edit
             </Form>
           )}
         />
@@ -99,4 +98,4 @@ function NewPost() {
   );
 }
 
-export default NewPost;
+export default EditPost;
