@@ -1,1 +1,1 @@
-export type Post = { title: string; content: string; isPublish: boolean };
+export type Post = { title: string; content: string; is_published: boolean };

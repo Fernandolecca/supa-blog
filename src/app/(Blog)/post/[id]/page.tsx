@@ -15,7 +15,7 @@ function PostInfo({ params }: Params) {
   const fetchPost = useCallback(async () => {
     const { data } = await supabase
       .from("posts")
-      .select("title, content, isPublish")
+      .select("title, content, is_published")
       .eq("post_id", params.id);
 
     if (data!.length > 0) {

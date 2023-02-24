@@ -23,7 +23,7 @@ export const signUpSchema = yup
   .concat(signInSchema);
 
 export const newPostShema = yup.object({
-  isPublish: yup.boolean(),
+  is_published: yup.boolean(),
   title: yup.string().required("A post needs a title"),
   content: yup.string().required("Cannot save a post with empty content"),
 });

@@ -18,7 +18,7 @@ function NewPost() {
 
   const onSubmit: SubmitHandler<newPostInputs> = async ({
     content,
-    isPublish,
+    is_published,
     title,
   }) => {
     setIsLoading(true);
@@ -33,7 +33,7 @@ function NewPost() {
         {
           content,
           title,
-          isPublish,
+          is_published,
           user_id: user?.id,
         },
       ])

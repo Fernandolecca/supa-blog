@@ -19,7 +19,7 @@ function EditPost({ params }: any) {
   const fetchPost = async () => {
     const { data } = await supabase
       .from("posts")
-      .select("title, content, isPublish")
+      .select("title, content, is_published")
       .eq("post_id", params.id);
 
     return data![0];
@@ -28,7 +28,7 @@ function EditPost({ params }: any) {
   const onSubmit: SubmitHandler<newPostInputs> = async ({
     title,
     content,
-    isPublish,
+    is_published,
   }) => {
     setIsLoading(true);
 
@@ -37,7 +37,7 @@ function EditPost({ params }: any) {
       .update({
         title,
         content,
-        isPublish,
+        is_published,
       })
       .eq("post_id", params.id)
       .select();
