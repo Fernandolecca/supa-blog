@@ -2,7 +2,8 @@ import React, { ButtonHTMLAttributes, MouseEventHandler } from "react";
 import Loader from "./Loader";
 
 interface Props extends ButtonHTMLAttributes<HTMLButtonElement> {
-  color: "primary" | "success" | "warning" | "error";
+  color: "primary" | "success" | "warning" | "error" | "transparent";
+  variant: "fill" | "outline";
   children: React.ReactNode;
   onClick?: MouseEventHandler<HTMLButtonElement>;
   icon?: React.ReactNode;
@@ -16,13 +17,15 @@ const bgColors: { [key in Props["color"]]: string } = {
   success: "bg-success",
   warning: "bg-warning",
   error: "bg-error",
+  transparent: "bg-transparent",
 };
 
 const bgColorsHover: { [key in Props["color"]]: string } = {
-  primary: "bg-primary-hover",
-  success: "bg-success-hover",
-  warning: "bg-warning-hover",
-  error: "bg-error-hover",
+  primary: "hover:bg-primary-hover",
+  success: "hover:bg-success-hover",
+  warning: "hover:bg-warning-hover",
+  error: "hover:bg-error-hover",
+  transparent: "hover:bg-transparent",
 };
 
 function Button({
@@ -35,14 +38,17 @@ function Button({
   fullWidth,
   marginTop,
   onClick,
+  variant,
 }: Props) {
   return (
     <button
-      className={`${bgColors[color]} hover:${
-        bgColorsHover[color]
-      } text-white px-4 py-2 font-sans ${
+      className={`${bgColors[color]} ${bgColorsHover[color]} ${
         fullWidth ? "w-full" : "w-max"
-      } rounded-sm mt-${marginTop} focus:outline-none disabled:bg-gray-300`}
+      } ${
+        variant === "fill"
+          ? "text-white rounded-sm"
+          : "border-gray-300 border rounded-md font-bold text-black"
+      } mt-${marginTop} focus:outline-none disabled:bg-gray-300 px-4 py-2 font-sans`}
       type={type}
       disabled={disabled}
       onClick={onClick}

@@ -47,6 +47,7 @@ function PostInfo({ params }: Params) {
           <Button
             type="button"
             color="error"
+            variant="fill"
             icon={<BsTrash />}
             withLoader={false}
             onClick={handleDelete}
@@ -57,6 +58,7 @@ function PostInfo({ params }: Params) {
           <Button
             type="button"
             color="success"
+            variant="fill"
             icon={<BsPencilSquare />}
             withLoader={false}
             onClick={() => router.push(`/post/edit/${params.id}`)}
@@ -78,9 +80,9 @@ function PostInfo({ params }: Params) {
           placeholder="This is such a good post..."
           className="border-none flex-1 focus:ring-0"
         />
-        <button className="border-gray-300 border px-4 py-2 rounded-md font-bold">
+        <Button color="transparent" variant="outline">
           Add comment
-        </button>
+        </Button>
       </div>
     </div>
   );
