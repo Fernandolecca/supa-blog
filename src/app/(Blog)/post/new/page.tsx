@@ -35,6 +35,7 @@ function NewPost() {
           title,
           is_published,
           user_id: user?.id,
+          created_by: user?.user_metadata.name,
         },
       ])
       .select("post_id");
