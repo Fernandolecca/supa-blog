@@ -55,7 +55,7 @@ function NewPost() {
       <div className="w-full">
         <FormValidator
           defaultValues={{
-            isPublish: false,
+            is_published: false,
             title: "",
             content: "",
           }}
@@ -64,7 +64,7 @@ function NewPost() {
             <Form
               {...data}
               fields={[
-                { name: "isPublish", type: "checkbox" },
+                { name: "is_published", type: "checkbox" },
                 { name: "title", type: "text" },
                 { name: "content", type: "textarea" },
               ]}

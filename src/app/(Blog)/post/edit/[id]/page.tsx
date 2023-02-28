@@ -63,7 +63,7 @@ function EditPost({ params }: any) {
             <Form
               {...data}
               fields={[
-                { name: "isPublish", type: "checkbox" },
+                { name: "is_published", type: "checkbox" },
                 { name: "title", type: "text" },
                 { name: "content", type: "textarea" },
               ]}
