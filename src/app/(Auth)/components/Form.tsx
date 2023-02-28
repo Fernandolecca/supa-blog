@@ -60,6 +60,7 @@ function Form({
         type="submit"
         disabled={!isValid}
         color="primary"
+        variant="fill"
         withLoader={isLoading}
         fullWidth={true}
         marginTop={8}

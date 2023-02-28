@@ -53,6 +53,7 @@ function Form({
       <Button
         type="submit"
         color="primary"
+        variant="fill"
         disabled={!isValid}
         withLoader={isLoading}
       >
