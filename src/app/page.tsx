@@ -1,9 +1,11 @@
 "use client";
 import supabase from "supabase";
 import Button from "@/shared/Button";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { BsPencilSquare } from "react-icons/bs";
 import { useEffect, useState } from "react";
+import { MdOutlineLogout } from "react-icons/md";
 
 export default function Home() {
   const router = useRouter();
@@ -16,7 +18,9 @@ export default function Home() {
   };
 
   const fetchPosts = async () => {
-    const { data } = await supabase.from("posts").select("content");
+    const { data } = await supabase
+      .from("posts")
+      .select("content, post_id, created_by");
 
     setPosts(data!);
   };
@@ -34,6 +38,7 @@ export default function Home() {
           type="button"
           color="success"
           icon={<BsPencilSquare />}
+          variant="fill"
           onClick={() => router.push("/post/new")}
         >
           New post
@@ -44,11 +49,36 @@ export default function Home() {
         <p className="mt-8 font-sans">There are no posts!</p>
       )}
 
-      {posts.map((post, index) => (
-        <p key={index}>{post.content}</p>
-      ))}
+      <ul className="my-8 w-full">
+        {posts.map((post, index) => (
+          <li
+            className="py-4 border-b-2 border-gray-200 flex flex-col gap-2"
+            key={index}
+          >
+            <span className="ml-auto px-2 rounded-full bg-gray-300 font-sans">
+              By: {post.created_by}
+            </span>
+            <p className="text-lg whitespace-nowrap text-ellipsis overflow-hidden text-primary">
+              <span className="text-slate-800">{post.content}</span>
+            </p>
+            <Link
+              className="text-sm text-gray-600 hover:underline"
+              href={`/post/${post.post_id}`}
+            >
+              Go to
+            </Link>
+          </li>
+        ))}
+      </ul>
 
-      <button onClick={() => onSignOut()}>Log out</button>
+      <Button
+        color="transparent"
+        variant="outline"
+        icon={<MdOutlineLogout />}
+        onClick={() => onSignOut()}
+      >
+        Log out
+      </Button>
     </div>
   );
 }
