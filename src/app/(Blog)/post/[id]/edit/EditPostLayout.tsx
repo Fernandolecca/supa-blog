@@ -9,21 +9,19 @@ import { SubmitHandler } from "react-hook-form";
 import { newPostInputs } from "@/schema/form";
 import { BiErrorCircle, BiCheck } from "react-icons/bi";
 import { useRouter } from "next/navigation";
+import { Post } from "@/types/blog";
+import { updatePost } from "../../services/Api";
 
-function EditPost({ params }: any) {
+interface Props {
+  post: Post;
+  id: string;
+}
+
+function EditPostLayout({ post, id }: Props) {
   const [isLoading, setIsLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
   const [successMsg, setSuccessMsg] = useState("");
   const router = useRouter();
-
-  const fetchPost = async () => {
-    const { data } = await supabase
-      .from("posts")
-      .select("title, content, is_published")
-      .eq("post_id", params.id);
-
-    return data![0];
-  };
 
   const onSubmit: SubmitHandler<newPostInputs> = async ({
     title,
@@ -32,32 +30,22 @@ function EditPost({ params }: any) {
   }) => {
     setIsLoading(true);
 
-    const { data } = await supabase
-      .from("posts")
-      .update({
-        title,
-        content,
-        is_published,
-      })
-      .eq("post_id", params.id)
-      .select();
+    const post = await updatePost(id, { title, content, is_published });
 
     setIsLoading(false);
 
-    if (data!.length > 0) {
-      setSuccessMsg("Post data changed successfully");
-    } else {
-      setErrorMsg("An error ocurred. Please try again");
-    }
+    post
+      ? setSuccessMsg("Post data changed successfully")
+      : setErrorMsg("An error ocurred. Please try again");
 
-    router.push(`/post/${params.id}`);
+    router.push(`/post/${id}`);
   };
 
   return (
     <div className="w-1/2  mx-auto flex justify-center items-center h-screen px-10">
       <div className="w-full">
         <FormValidator
-          defaultValues={fetchPost}
+          defaultValues={post}
           schema={schema}
           renderForm={(data) => (
             <Form
@@ -98,4 +86,4 @@ function EditPost({ params }: any) {
   );
 }
 
-export default EditPost;
+export default EditPostLayout;
