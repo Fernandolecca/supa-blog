@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from "react";
-import supabase from "supabase";
+
 import Form from "../components/Form";
 import FormValidator from "@/shared/FormValidator";
 import Toast from "@/shared/Toast";
@@ -9,6 +9,7 @@ import { SubmitHandler } from "react-hook-form";
 import { newPostInputs } from "@/schema/form";
 import { BiErrorCircle, BiCheck } from "react-icons/bi";
 import { useRouter } from "next/navigation";
+import { createPost } from "../services/Api";
 
 function NewPost() {
   const [isLoading, setIsLoading] = useState(false);
@@ -23,32 +24,15 @@ function NewPost() {
   }) => {
     setIsLoading(true);
 
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
-
-    const { data, error } = await supabase
-      .from("posts")
-      .insert([
-        {
-          content,
-          title,
-          is_published,
-          user_id: user?.id,
-          created_by: user?.user_metadata.name,
-        },
-      ])
-      .select("post_id");
+    const { data, error } = await createPost({ content, title, is_published });
 
     setIsLoading(false);
 
-    if (error) {
-      setErrorMsg("Sorry. We cannot save your post");
-    } else {
-      setSuccessMsg("Post saved succesfully");
-    }
+    error
+      ? setErrorMsg("Sorry. We cannot save your post")
+      : setSuccessMsg("Post saved succesfully");
 
-    router.push(`/post/${data![0].post_id}`);
+    router.push(`/post/${data!.post_id}`);
   };
 
   return (
