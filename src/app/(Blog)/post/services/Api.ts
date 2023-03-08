@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import { Post } from "@/types/blog";
+import { Comment, Post } from "@/types/blog";
 import supabase from "supabase";
 
 export async function fetchPost(id: string) {
@@ -51,4 +51,28 @@ export async function createPost(post: Post) {
     .single();
 
   return res;
+}
+
+export async function fetchComments(id: string) {
+  const { data: comments } = await supabase
+    .from("comments")
+    .select("content, comment_id")
+    .match({ post_id: id });
+
+  return comments ?? [];
+}
+
+export async function addComment(comment: Comment) {
+  const user = await getCurrentUser();
+
+  await supabase.from("comments").insert([
+    {
+      ...comment,
+      user_id: user?.id,
+    },
+  ]);
+}
+
+export async function deleteComment(id: string) {
+  await supabase.from("comments").delete().eq("comment_id", id);
 }
