@@ -1,10 +1,11 @@
 "use client";
-import React from "react";
+import React, { ChangeEvent, useState } from "react";
 import supabase from "supabase";
 import Link from "next/link";
 import Button from "@/shared/Button";
 import { useRouter } from "next/navigation";
 import { BsPencilSquare, BsTrash, BsArrowLeft } from "react-icons/bs";
+import { addComment } from "../services/Api";
 
 interface Props {
   children: React.ReactNode;
@@ -12,12 +13,24 @@ interface Props {
 }
 
 function PostInfolayout({ children, id }: Props) {
+  const [comment, setComment] = useState("");
   const router = useRouter();
 
   const handleDelete = async () => {
     await supabase.from("posts").delete().eq("post_id", id);
 
     router.push("/");
+  };
+
+  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setComment(event.target.value);
+  };
+
+  const AddComment = async () => {
+    await addComment({
+      post_id: Number(id),
+      content: comment,
+    });
   };
 
   return (
@@ -62,8 +75,10 @@ function PostInfolayout({ children, id }: Props) {
           type="text"
           placeholder="This is such a good post..."
           className="border-none flex-1 focus:ring-0"
+          onChange={handleChange}
+          value={comment}
         />
-        <Button color="transparent" variant="outline">
+        <Button color="transparent" variant="outline" onClick={AddComment}>
           Add comment
         </Button>
       </div>
