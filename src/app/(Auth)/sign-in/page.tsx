@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import supabase from "supabase";
+import Cookies from "js-cookie";
 import Link from "next/link";
 import Toast from "@/shared/Toast";
 import Form from "@/app/(Auth)/components/Form";
@@ -32,6 +33,7 @@ function SignIn() {
       setErrorMsg(error.message);
     } else {
       setSuccessMsg("Succesfully Log in!");
+      Cookies.set("isLoggedIn", "true");
       router.push("/");
     }
   };

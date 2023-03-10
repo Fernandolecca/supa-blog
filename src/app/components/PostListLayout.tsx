@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 import supabase from "supabase";
+import Cookies from "js-cookie";
 import Button from "@/shared/Button";
 import { useRouter } from "next/navigation";
 import { BsPencilSquare } from "react-icons/bs";
@@ -15,7 +16,7 @@ function PostListLayout({ children }: Props) {
 
   const onSignOut = async () => {
     await supabase.auth.signOut();
-
+    Cookies.remove("isLoggedIn");
     router.push("/sign-in");
   };
 
